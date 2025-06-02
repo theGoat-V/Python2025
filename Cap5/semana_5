@@ -1,0 +1,64 @@
+"""
+def printInfo():
+    print('Nombre:Gustavo Navarro')
+    print('Edad. 16 años')
+    print('Cuidad: Zoquite, Zacatecas')
+printInfo()
+printInfo()
+
+
+def suma():
+    a, b =5, 10
+    print (a + b)
+suma()
+
+
+def imprime_nombre(nombre_completo):
+    print( "Tu nombre es : {}".format(nombre_completo) )
+imprime_nombre("Gustavo Navarro")
+imprime_nombre("René Vargas")
+
+
+def sumarNumeros(numero1, numero2):
+    resultado = numero1 + numero2
+    print("{} + {} ={}".format(numero1, numero2, resultado) )
+sumarNumeros(5, 8)
+sumarNumeros(3.5, 5.5)
+
+
+numero1 = [ 2, 4, 5, 10 ]
+numero2 = [ 1, 3, 6 ]
+def cuadrados (numeros):
+    for numero in numeros:
+        print(numero**2)
+cuadrados (numero1)
+cuadrados (numero2)
+
+
+def  calcArea(r, pi=3.14):
+    area = pi * (r**2)
+    print('Area:{}'.format(area) )
+calcArea(2)
+
+
+def imprimeNombre(nombre, segundo, apellido=""):
+    if segundo:
+        print( "{} {} {}".format(nombre, segundo, apellido ) )
+    else:
+        print( "{} {}".format(nombre, apellido) )
+imprimeNombre("Gustavo", "Navarro")
+imprimeNombre("Gustavo", "Alonso", "Navarro")
+
+
+def sumaNumeros(numero1, numero2):
+    return numero1 + numero2
+numero = sumaNumeros(5.5, 4.5)
+print(numero)
+print(sumaNumeros (10, 10) )
+
+
+def buscarenLista(unalista, elementos):
+    return True if elementos in unalista else False
+resultado = buscarenLista( ["one", 2, "three"], 2)
+print(resultado)
+"""

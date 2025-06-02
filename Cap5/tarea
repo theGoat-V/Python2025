@@ -1,0 +1,12 @@
+nombres = ['Tonatzin', "propio", 'Leterg']
+
+def cambiarValor(unalista, nombre, indice):
+    if 0 <= indice < len(unalista):
+        unalista[indice] = nombre
+    else:
+        print(f"Índice {indice} fuera de rango para la lista de longitud {len(unalista)}")
+
+# Ejemplo de uso:
+print("Lista original:", nombres)
+cambiarValor(nombres, "Rene", 1)
+print("Lista modificada:", nombres)
