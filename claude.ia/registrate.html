@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión / Registrarse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .checkbox-group a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .toggle-form a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .weak { background: #e74c3c; width: 33%; }
+        .medium { background: #f39c12; width: 66%; }
+        .strong { background: #27ae60; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="header-title">Iniciar Sesión</h1>
+            <p id="header-subtitle">Accede a tu cuenta</p>
+        </div>
+
+        <div class="form-container">
+            <!-- Formulario de Login -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="login-terms" required>
+                    <label for="login-terms">Acepto los <a href="#" target="_blank">términos y condiciones</a></label>
+                </div>
+
+                <button type="submit" class="btn">Iniciar Sesión</button>
+
+                <div class="toggle-form">
+                    ¿No tienes cuenta? <a href="#" id="show-register">Regístrate aquí</a>
+                </div>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="register-form" class="hidden">
+                <div id="success-message" class="success hidden"></div>
+
+                <div class="form-group">
+                    <label for="register-fullname">Nombre Completo</label>
+                    <input type="text" id="register-fullname" required>
+                    <div id="error-fullname" class="error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-username">Nombre de Usuario</label>
+                    <input type="text" id="register-username" required>
+                    <div id="error-username" class="error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-email">Correo Electrónico</label>
+                    <input type="email" id="register-email" required>
+                    <div id="error-email" class="error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" required>
+                    <div class="password-strength">
+                        <div id="password-strength-bar" class="password-strength-bar"></div>
+                    </div>
+                    <div id="error-password" class="error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirmar Contraseña</label>
+                    <input type="password" id="register-confirm-password" required>
+                    <div id="error-confirm-password" class="error"></div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="register-terms" required>
+                    <label for="register-terms">Acepto los <a href="#" target="_blank">términos y condiciones</a></label>
+                </div>
+
+                <button type="submit" class="btn">Registrarse</button>
+
+                <div class="toggle-form">
+                    ¿Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión aquí</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Variables para almacenar usuarios en memoria
+        let users = [];
+
+        // Elementos del DOM
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegisterLink = document.getElementById('show-register');
+        const showLoginLink = document.getElementById('show-login');
+        const headerTitle = document.getElementById('header-title');
+        const headerSubtitle = document.getElementById('header-subtitle');
+
+        // Alternar entre formularios
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            headerTitle.textContent = 'Registrarse';
+            headerSubtitle.textContent = 'Crea tu cuenta nueva';
+        });
+
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            headerTitle.textContent = 'Iniciar Sesión';
+            headerSubtitle.textContent = 'Accede a tu cuenta';
+        });
+
+        // Validación de contraseña en tiempo real
+        const passwordInput = document.getElementById('register-password');
+        const strengthBar = document.getElementById('password-strength-bar');
+
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z\d]/.test(password)) strength++;
+
+            strengthBar.className = 'password-strength-bar';
+            if (strength <= 2) strengthBar.classList.add('weak');
+            else if (strength === 3) strengthBar.classList.add('medium');
+            else strengthBar.classList.add('strong');
+        });
+
+        // Manejo del registro
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Limpiar errores previos
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+            
+            // Obtener valores
+            const fullname = document.getElementById('register-fullname').value.trim();
+            const username = document.getElementById('register-username').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const termsAccepted = document.getElementById('register-terms').checked;
+
+            let hasError = false;
+
+            // Validaciones
+            if (fullname.length < 3) {
+                document.getElementById('error-fullname').textContent = 'El nombre debe tener al menos 3 caracteres';
+                hasError = true;
+            }
+
+            if (username.length < 3) {
+                document.getElementById('error-username').textContent = 'El usuario debe tener al menos 3 caracteres';
+                hasError = true;
+            }
+
+            if (users.find(u => u.username === username)) {
+                document.getElementById('error-username').textContent = 'Este nombre de usuario ya está en uso';
+                hasError = true;
+            }
+
+            if (users.find(u => u.email === email)) {
+                document.getElementById('error-email').textContent = 'Este correo ya está registrado';
+                hasError = true;
+            }
+
+            if (password.length < 6) {
+                document.getElementById('error-password').textContent = 'La contraseña debe tener al menos 6 caracteres';
+                hasError = true;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('error-confirm-password').textContent = 'Las contraseñas no coinciden';
+                hasError = true;
+            }
+
+            if (!termsAccepted) {
+                alert('Debes aceptar los términos y condiciones');
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            // Crear nuevo usuario
+            const newUser = {
+                fullname,
+                username,
+                email,
+                password,
+                registeredAt: new Date().toISOString()
+            };
+
+            users.push(newUser);
+
+            // Generar y descargar CSV
+            downloadCSV(newUser);
+
+            // Mostrar mensaje de éxito
+            const successMsg = document.getElementById('success-message');
+            successMsg.textContent = '¡Registro exitoso! Tu cuenta ha sido creada.';
+            successMsg.classList.remove('hidden');
+
+            // Limpiar formulario
+            registerForm.reset();
+            strengthBar.className = 'password-strength-bar';
+
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 5000);
+        });
+
+        // Manejo del login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const termsAccepted = document.getElementById('login-terms').checked;
+
+            if (!termsAccepted) {
+                alert('Debes aceptar los términos y condiciones');
+                return;
+            }
+
+            // Buscar usuario
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                alert(`¡Bienvenido, ${user.fullname}!`);
+                loginForm.reset();
+            } else {
+                alert('Correo o contraseña incorrectos');
+            }
+        });
+
+        // Función para descargar CSV
+        function downloadCSV(user) {
+            const csvHeader = 'Nombre Completo,Usuario,Correo,Fecha de Registro\n';
+            const csvRow = `"${user.fullname}","${user.username}","${user.email}","${user.registeredAt}"\n`;
+            
+            const csvContent = csvHeader + csvRow;
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `registro_${user.username}_${Date.now()}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

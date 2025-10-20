@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Productos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Material 3 Colors */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --error: #ef4444;
+            --success: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        /* Animaciones */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Inputs mejorados */
+        input, select, textarea {
+            font-size: 16px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Botones con Material 3 */
+        button {
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Tarjetas */
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Alertas */
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            border-left: 4px solid var(--error);
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            border-left: 4px solid var(--success);
+            color: #065f46;
+        }
+
+        /* Headers */
+        h1 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.875rem;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        label {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Gradientes Material 3 */
+        .gradient-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+
+        .gradient-primary-light {
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+        }
+
+        /* Estilos del formulario */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            background-color: var(--surface);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Estilos específicos */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            padding: 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            background: var(--surface);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .auth-header {
+            padding: 32px 24px;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+        }
+
+        .auth-header h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .auth-body {
+            padding: 32px 24px;
+        }
+
+        .dashboard-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            padding: 32px 16px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            background: var(--surface);
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-email {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            padding: 12px 24px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+            color: white;
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background-color: #dc2626;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px 16px;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+
+        .form-container {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .form-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .product-info {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .product-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .product-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .product-actions button {
+            flex: 1;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--surface);
+            border-radius: 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state-description {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .user-section {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        let state = {
+            page: 'login',
+            isLogin: true,
+            isAuthenticated: false,
+            currentUser: '',
+            loading: false,
+            showPassword: false,
+            error: '',
+            success: '',
+            products: [],
+            formData: {
+                email: '',
+                password: '',
+                confirmPassword: ''
+            },
+            productForm: {
+                name: '',
+                description: '',
+                price: '',
+                category: 'Electrónica',
+                stock: ''
+            }
+        };
+
+        const API_URL = 'http://localhost:8000/api';
+
+        function handleChange(e) {
+            const { name, value } = e.target;
+            if (name.startsWith('product_')) {
+                const key = name.replace('product_', '');
+                state.productForm[key] = value;
+            } else {
+                state.formData[name] = value;
+            }
+            state.error = '';
+            state.success = '';
+            render();
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            state.loading = true;
+            state.error = '';
+            render();
+
+            const { email, password, confirmPassword } = state.formData;
+
+            if (!email || !password || !confirmPassword) {
+                state.error = 'Por favor completa todos los campos';
+                state.loading = false;
+                render();
+                return;
+            }
+
+            fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, confirmPassword })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.detail) {
+                    state.error = data.detail;
+                } else if (data.message) {
+                    state.success = '✅ Registro exitoso. Inicia sesión ahora.';
+                    state.formData = { email: '', password: '', confirmPassword: '' };
+                    state.isLogin = true;
+                }
+                state.loading = false;
+                render();
+            })
+            .catch(() => {
+                state.error = 'Error de conexión con el servidor';
+                state.loading = false;
+                render();
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            state.loading = true;
+            state.error = '';
+            render();
+
+            const { email, password } = state.formData;
+
+            if (!email || !password) {
+                state.error = 'Por favor completa todos los campos';
+                state.loading = false;
+                render();
+                return;
+            }
+
+            fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.detail) {
+                    state.error = data.detail;
+                } else if (data.message) {
+                    state.isAuthenticated = true;
+                    state.currentUser = email;
+                    state.formData = { email: '', password: '', confirmPassword: '' };
+                    state.page = 'products';
+                    loadProducts();
+                }
+                state.loading = false;
+                render();
+            })
+            .catch(() => {
+                state.error = 'Error de conexión con el servidor';
+                state.loading = false;
+                render();
+            });
+        }
+
+        function loadProducts() {
+            fetch(`${API_URL}/products?email=${state.currentUser}`)
+            .then(res => res.json())
+            .then(data => {
+                state.products = data.products || [];
+                render();
+            })
+            .catch(() => {
+                state.error = 'Error al cargar productos';
+                render();
+            });
+        }
+
+        function createProduct(e) {
+            e.preventDefault();
+            const { name, description, price, category, stock } = state.productForm;
+
+            if (!name || !price || !stock) {
+                state.error = 'Por favor completa los campos requeridos';
+                render();
+                return;
+            }
+
+            state.loading = true;
+            render();
+
+            const productData = {
+                name: name,
+                description: description,
+                price: parseFloat(price),
+                category: category,
+                stock: parseInt(stock)
+            };
+
+            fetch(`${API_URL}/products?email=${state.currentUser}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.detail) {
+                    state.error = data.detail;
+                } else {
+                    state.success = '✅ Producto creado exitosamente';
+                    state.productForm = { name: '', description: '', price: '', category: 'Electrónica', stock: '' };
+                    loadProducts();
+                }
+                state.loading = false;
+                render();
+            })
+            .catch(() => {
+                state.error = 'Error al crear producto';
+                state.loading = false;
+                render();
+            });
+        }
+
+        function deleteProduct(productId) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+
+            state.loading = true;
+            render();
+
+            fetch(`${API_URL}/products/${productId}?email=${state.currentUser}`, {
+                method: 'DELETE'
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.detail) {
+                    state.error = data.detail;
+                } else {
+                    state.success = '✅ Producto eliminado exitosamente';
+                    loadProducts();
+                }
+                state.loading = false;
+                render();
+            })
+            .catch(() => {
+                state.error = 'Error al eliminar producto';
+                state.loading = false;
+                render();
+            });
+        }
+
+        function handleLogout() {
+            state.isAuthenticated = false;
+            state.currentUser = '';
+            state.products = [];
+            state.page = 'login';
+            state.isLogin = true;
+            state.formData = { email: '', password: '', confirmPassword: '' };
+            state.error = '';
+            state.success = '';
+            render();
+        }
+
+        function toggleForm() {
+            state.isLogin = !state.isLogin;
+            state.error = '';
+            state.success = '';
+            state.formData = { email: '', password: '', confirmPassword: '' };
+            render();
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+
+            if (!state.isAuthenticated) {
+                // PANTALLA DE LOGIN/REGISTRO
+                app.innerHTML = `
+                    <div class="auth-container animate-fade-in">
+                        <div class="auth-card">
+                            <div class="auth-header">
+                                <h1>${state.isLogin ? 'Inicia sesión' : 'Regístrate'}</h1>
+                                <p>${state.isLogin ? 'Accede a tu cuenta' : 'Crea una nueva cuenta'}</p>
+                            </div>
+
+                            <div class="auth-body">
+                                <div class="form-group">
+                                    <label>Correo electrónico</label>
+                                    <input type="email" name="email" value="${state.formData.email}" oninput="handleChange(event)" placeholder="tu@correo.com" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Contraseña</label>
+                                    <div style="position: relative;">
+                                        <input type="${state.showPassword ? 'text' : 'password'}" name="password" value="${state.formData.password}" oninput="handleChange(event)" placeholder="Mínimo 6 caracteres" />
+                                        <button type="button" onclick="state.showPassword = !state.showPassword; render();" style="position: absolute; right: 12px; top: 12px; background: none; border: none; color: #9ca3af; padding: 0; cursor: pointer; font-size: 18px;">👁️</button>
+                                    </div>
+                                </div>
+
+                                ${!state.isLogin ? `
+                                    <div class="form-group">
+                                        <label>Confirmar contraseña</label>
+                                        <input type="${state.showPassword ? 'text' : 'password'}" name="confirmPassword" value="${state.formData.confirmPassword}" oninput="handleChange(event)" placeholder="Repite tu contraseña" />
+                                    </div>
+                                ` : ''}
+
+                                ${state.error ? `<div class="alert alert-error">${state.error}</div>` : ''}
+                                ${state.success ? `<div class="alert alert-success">${state.success}</div>` : ''}
+
+                                <button onclick="${state.isLogin ? 'handleLogin' : 'handleRegister'}(event)" disabled="${state.loading}" class="btn-primary" style="width: 100%; padding: 14px 24px; font-size: 16px; margin-top: 20px;">
+                                    ${state.loading ? 'Procesando...' : state.isLogin ? 'Inicia sesión' : 'Regístrate'}
+                                </button>
+
+                                <div style="text-align: center; margin-top: 24px;">
+                                    <span style="color: var(--text-secondary);">
+                                        ${state.isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
+                                    </span>
+                                    <button onclick="toggleForm()" class="btn-secondary" style="display: inline-block; margin-left: 8px;">
+                                        ${state.isLogin ? 'Regístrate' : 'Inicia sesión'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // PANTALLA DE PRODUCTOS
+            app.innerHTML = `
+                <div class="dashboard-container animate-fade-in">
+                    <div class="container">
+                        <div class="dashboard-header">
+                            <h1>📦 Mis Productos</h1>
+                            <div class="user-section">
+                                <span class="user-email">${state.currentUser}</span>
+                                <button onclick="handleLogout()" class="btn-danger">Cerrar sesión</button>
+                            </div>
+                        </div>
+
+                        <div class="form-container">
+                            <h2>➕ Agregar nuevo producto</h2>
+                            <div class="form-grid" style="margin-top: 20px;">
+                                <input type="text" name="product_name" value="${state.productForm.name}" oninput="handleChange(event)" placeholder="Nombre del producto *" />
+                                <input type="text" name="product_description" value="${state.productForm.description}" oninput="handleChange(event)" placeholder="Descripción" />
+                                <input type="number" name="product_price" value="${state.productForm.price}" oninput="handleChange(event)" placeholder="Precio *" step="0.01" min="0" />
+                                <select name="product_category" onchange="handleChange(event)">
+                                    <option value="Electrónica" ${state.productForm.category === 'Electrónica' ? 'selected' : ''}>Electrónica</option>
+                                    <option value="Ropa" ${state.productForm.category === 'Ropa' ? 'selected' : ''}>Ropa</option>
+                                    <option value="Alimentos" ${state.productForm.category === 'Alimentos' ? 'selected' : ''}>Alimentos</option>
+                                    <option value="Libros" ${state.productForm.category === 'Libros' ? 'selected' : ''}>Libros</option>
+                                    <option value="Otros" ${state.productForm.category === 'Otros' ? 'selected' : ''}>Otros</option>
+                                </select>
+                                <input type="number" name="product_stock" value="${state.productForm.stock}" oninput="handleChange(event)" placeholder="Stock *" min="0" />
+                                <button onclick="createProduct(event)" disabled="${state.loading}" class="btn-primary form-full-width" style="padding: 14px 24px;">
+                                    ${state.loading ? 'Agregando...' : 'Agregar Producto'}
+                                </button>
+                            </div>
+                            ${state.error ? `<div class="alert alert-error">${state.error}</div>` : ''}
+                            ${state.success ? `<div class="alert alert-success">${state.success}</div>` : ''}
+                        </div>
+
+                        <div class="products-grid">
+                            ${state.products.length > 0 ? state.products.map(product => `
+                                <div class="product-card">
+                                    <div class="product-name">${product.name}</div>
+                                    <div class="product-description">${product.description || 'Sin descripción'}</div>
+                                    <div class="product-info">
+                                        <div class="product-info-row">
+                                            <span>Precio:</span>
+                                            <span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>
+                                        </div>
+                                        <div class="product-info-row">
+                                            <span>Stock:</span>
+                                            <span>${product.stock} unidades</span>
+                                        </div>
+                                        <div class="product-info-row">
+                                            <span>Categoría:</span>
+                                            <span>${product.category}</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button onclick="deleteProduct('${product.id}')" class="btn-danger">Eliminar</button>
+                                    </div>
+                                </div>
+                            `).join('') : `
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">📦</div>
+                                    <div class="empty-state-title">No tienes productos aún</div>
+                                    <div class="empty-state-description">Crea tu primer producto para empezar</div>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        render();
+    </script>
+</body>
+</html>
