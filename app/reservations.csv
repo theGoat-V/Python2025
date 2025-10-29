@@ -1,0 +1,5 @@
+id,user_id,court_id,court_name,date,time,price,created_at,status
+8a7f786c-864e-40ff-bad7-67981666c508,a18d84c4-21a1-4c53-bd48-f89e10f5b46b,r2,Cancha Raquetbol 2,2025-10-26,11:00,280,2025-10-25T12:20:45.220818,confirmed
+8ad94ca8-60b3-485c-ad74-2d3a88d8e766,a18d84c4-21a1-4c53-bd48-f89e10f5b46b,r2,Cancha Raquetbol 2,2025-10-26,12:00,280,2025-10-25T12:20:55.994001,confirmed
+deb701e4-2f71-4f1d-83d3-34f25ecf1787,a18d84c4-21a1-4c53-bd48-f89e10f5b46b,bd3,Cancha Bádminton 3,2025-10-30,16:00,240,2025-10-27T12:17:38.810699,confirmed
+d78b3b85-12bd-48b8-aa53-c38b0c502943,a18d84c4-21a1-4c53-bd48-f89e10f5b46b,bd3,Cancha Bádminton 3,2025-10-30,17:00,240,2025-10-27T12:17:52.594521,confirmed

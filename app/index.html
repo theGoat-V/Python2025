@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Deportivo - M3 Expressive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #EADDFF;
+            --md-sys-color-on-primary-container: #21005D;
+            --md-sys-color-secondary: #625B71;
+            --md-sys-color-surface: #FEF7FF;
+            --md-sys-color-surface-variant: #E7E0EC;
+            --md-sys-color-on-surface: #1C1B1F;
+            --md-sys-color-on-surface-variant: #49454F;
+            --md-sys-color-outline: #79747E;
+            --md-sys-color-error: #B3261E;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Login Container */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--md-sys-color-surface);
+            border-radius: 28px;
+            padding: 48px 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            color: var(--md-sys-color-on-surface);
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: var(--md-sys-color-surface-variant);
+            border-radius: 100px;
+            padding: 4px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 100px;
+            background: transparent;
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            box-shadow: 0 2px 8px rgba(103, 80, 164, 0.3);
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper .material-icons {
+            position: absolute;
+            left: 16px;
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 24px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 16px 16px 16px 52px;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--md-sys-color-on-surface);
+            background: var(--md-sys-color-surface);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--md-sys-color-primary);
+            border-width: 2px;
+            box-shadow: 0 0 0 4px rgba(103, 80, 164, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 100px;
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(103, 80, 164, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #7c63b8;
+            box-shadow: 0 4px 16px rgba(103, 80, 164, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -12px;
+            margin-bottom: 24px;
+        }
+
+        .forgot-password a {
+            color: var(--md-sys-color-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .navbar {
+            background: var(--md-sys-color-primary);
+            color: white;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .navbar h2 {
+            font-size: 24px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-logout {
+            padding: 8px 24px;
+            border: 2px solid white;
+            border-radius: 100px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: white;
+            color: var(--md-sys-color-primary);
+        }
+
+        .dashboard-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h1 {
+            font-size: 42px;
+            color: #1C1B1F;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #49454F;
+        }
+
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .sport-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sport-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sport-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .sport-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .sport-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .sport-card h3 {
+            font-size: 24px;
+            color: #1C1B1F;
+            margin-bottom: 8px;
+        }
+
+        .sport-card p {
+            color: #49454F;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .sport-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Courts View */
+        .courts-view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .courts-view.active {
+            display: block;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 100px;
+            color: var(--md-sys-color-primary);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(-4px);
+        }
+
+        .courts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .court-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .court-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .court-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+        }
+
+        .court-header h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .court-status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .court-body {
+            padding: 24px;
+        }
+
+        .court-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #49454F;
+        }
+
+        .info-row .material-icons {
+            color: var(--md-sys-color-primary);
+            font-size: 20px;
+        }
+
+        .price-tag {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            margin: 16px 0;
+        }
+
+        .price-tag span {
+            font-size: 16px;
+            font-weight: 400;
+            color: #49454F;
+        }
+
+        .btn-reserve {
+            width: 100%;
+            padding: 14px;
+            background: var(--md-sys-color-primary);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reserve:hover {
+            background: #7c63b8;
+            transform: scale(1.02);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 28px;
+            color: #1C1B1F;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #49454F;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #f0f0f0;
+        }
+
+        .calendar-container {
+            margin-bottom: 24px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .calendar-header h3 {
+            font-size: 18px;
+            color: #1C1B1F;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav button {
+            background: transparent;
+            border: 1px solid var(--md-sys-color-outline);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav button:hover {
+            background: var(--md-sys-color-primary-container);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: #49454F;
+            padding: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            background: #f5f5f5;
+        }
+
+        .calendar-day:hover:not(.disabled) {
+            background: var(--md-sys-color-primary-container);
+        }
+
+        .calendar-day.selected {
+            background: var(--md-sys-color-primary);
+            color: white;
+            font-weight: 500;
+        }
+
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--md-sys-color-primary);
+        }
+
+        .time-slots {
+            margin-bottom: 24px;
+        }
+
+        .time-slots h3 {
+            font-size: 18px;
+            color: #1C1B1F;
+            margin-bottom: 16px;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            border: 2px solid var(--md-sys-color-outline);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time-slot:hover:not(.occupied) {
+            border-color: var(--md-sys-color-primary);
+            background: var(--md-sys-color-primary-container);
+        }
+
+        .time-slot.selected {
+            background: var(--md-sys-color-primary);
+            color: white;
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .time-slot.occupied {
+            background: #f5f5f5;
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #e0e0e0;
+        }
+
+        .reservation-summary {
+            background: var(--md-sys-color-primary-container);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .reservation-summary h3 {
+            font-size: 18px;
+            color: var(--md-sys-color-on-primary-container);
+            margin-bottom: 12px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        .summary-total {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid var(--md-sys-color-primary);
+        }
+
+        /* Notifications */
+        .notifications-panel {
+            position: fixed;
+            top: 70px;
+            right: 32px;
+            width: 400px;
+            max-height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+            animation: slideDown 0.3s ease;
+        }
+
+        .notifications-panel.active {
+            display: flex;
+        }
+
+        .notifications-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notifications-header h3 {
+            font-size: 20px;
+            color: #1C1B1F;
+        }
+
+        .clear-notifications {
+            background: transparent;
+            border: none;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .notifications-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .notification-item {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background: var(--md-sys-color-primary-container);
+        }
+
+        .notification-item.unread {
+            background: var(--md-sys-color-primary-container);
+            border-left: 4px solid var(--md-sys-color-primary);
+        }
+
+        .notification-title {
+            font-weight: 500;
+            color: #1C1B1F;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 14px;
+            color: #49454F;
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #79747E;
+        }
+
+        .empty-notifications {
+            text-align: center;
+            padding: 40px;
+            color: #79747E;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login/Register Container -->
+    <div id="auth-container" class="login-container">
+        <div class="auth-card">
+            <div class="header">
+                <h1>Bienvenido</h1>
+                <p>Accede a tu cuenta o crea una nueva</p>
+            </div>
+
+            <div class="tab-container">
+                <button class="tab active" onclick="switchTab('login')">Iniciar Sesión</button>
+                <button class="tab" onclick="switchTab('register')">Registrarse</button>
+            </div>
+
+            <div id="alert" class="alert">
+                <span class="material-icons" id="alert-icon">info</span>
+                <span id="alert-message"></span>
+            </div>
+
+            <div id="login-section" class="form-section active">
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <span class="material-icons">email</span>
+                            <input type="email" id="login-email" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <span class="material-icons">lock</span>
+                            <input type="password" id="login-password" placeholder="Contraseña" required>
+                        </div>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                </form>
+            </div>
+
+            <div id="register-section" class="form-section">
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <span class="material-icons">person</span>
+                            <input type="text" id="register-name" placeholder="Nombre completo" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <span class="material-icons">email</span>
+                            <input type="email" id="register-email" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <span class="material-icons">lock</span>
+                            <input type="password" id="register-password" placeholder="Contraseña" required minlength="6">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <span class="material-icons">lock_outline</span>
+                            <input type="password" id="register-confirm" placeholder="Confirmar contraseña" required minlength="6">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <nav class="navbar">
+            <h2>
+                <span class="material-icons">sports_tennis</span>
+                Centro Deportivo
+            </h2>
+            <div class="navbar-right">
+                <button class="notification-btn" onclick="toggleNotifications()">
+                    <span class="material-icons">notifications</span>
+                    <span class="notification-badge" id="notification-count">0</span>
+                </button>
+                <div class="user-info">
+                    <span id="user-name">Usuario</span>
+                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Notifications Panel -->
+        <div id="notifications-panel" class="notifications-panel">
+            <div class="notifications-header">
+                <h3>Notificaciones</h3>
+                <button class="clear-notifications" onclick="clearAllNotifications()">Limpiar todo</button>
+            </div>
+            <div class="notifications-body" id="notifications-body">
+                <div class="empty-notifications">
+                    <span class="material-icons" style="font-size: 48px; color: #ccc;">notifications_none</span>
+                    <p>No tienes notificaciones</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Sports Grid View -->
+            <div id="sports-view" class="sports-view">
+                <div class="section-header">
+                    <h1>Nuestras Instalaciones</h1>
+                    <p>Encuentra la cancha perfecta para tu deporte favorito</p>
+                </div>
+                <div class="sports-grid" id="sports-grid"></div>
+            </div>
+
+            <!-- Courts View -->
+            <div id="courts-view" class="courts-view">
+                <button class="back-button" onclick="showSportsView()">
+                    <span class="material-icons">arrow_back</span>
+                    Volver a instalaciones
+                </button>
+                <div class="section-header">
+                    <h1 id="sport-title"></h1>
+                    <p>Canchas disponibles para reservar</p>
+                </div>
+                <div class="courts-grid" id="courts-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div id="reservation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-court-name">Reservar Cancha</h2>
+                <button class="close-modal" onclick="closeReservationModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+
+            <!-- Calendar -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h3 id="current-month">Octubre 2025</h3>
+                    <div class="calendar-nav">
+                        <button onclick="changeMonth(-1)">
+                            <span class="material-icons">chevron_left</span>
+                        </button>
+                        <button onclick="changeMonth(1)">
+                            <span class="material-icons">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+
+            <!-- Time Slots -->
+            <div class="time-slots">
+                <h3>Selecciona un horario</h3>
+                <div class="time-grid" id="time-slots"></div>
+            </div>
+
+            <!-- Reservation Summary -->
+            <div class="reservation-summary" id="reservation-summary" style="display: none;">
+                <h3>Resumen de Reservación</h3>
+                <div class="summary-item">
+                    <span>Cancha:</span>
+                    <strong id="summary-court"></strong>
+                </div>
+                <div class="summary-item">
+                    <span>Fecha:</span>
+                    <strong id="summary-date"></strong>
+                </div>
+                <div class="summary-item">
+                    <span>Horario:</span>
+                    <strong id="summary-time"></strong>
+                </div>
+                <div class="summary-item">
+                    <span>Precio por hora:</span>
+                    <strong id="summary-price"></strong>
+                </div>
+                <div class="summary-total">
+                    Total: $<span id="summary-total">0</span> MXN
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="confirmReservation()" id="confirm-btn" disabled>
+                Confirmar Reservación
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let currentUser = null;
+        let currentCourt = null;
+        let currentDate = new Date();
+        let selectedDate = null;
+        let selectedTime = null;
+        let notifications = [];
+
+        const sports = [
+            { id: 'raquetbol', name: 'Raquetbol', icon: '🎾', description: 'Canchas profesionales de raquetbol' },
+            { id: 'tenis', name: 'Tenis', icon: '🎾', description: 'Canchas de tenis de superficie dura' },
+            { id: 'padel', name: 'Pádel', icon: '🎾', description: 'Modernas canchas de pádel' },
+            { id: 'pickleball', name: 'Pickleball', icon: '🏓', description: 'Canchas de pickleball' },
+            { id: 'voleibol', name: 'Voleibol', icon: '🏐', description: 'Canchas de voleibol indoor' },
+            { id: 'baloncesto', name: 'Baloncesto', icon: '🏀', description: 'Canchas de baloncesto profesional' },
+            { id: 'badminton', name: 'Bádminton', icon: '🏸', description: 'Canchas de bádminton' },
+            { id: 'squash', name: 'Squash', icon: '🎾', description: 'Canchas de squash climatizadas' }
+        ];
+
+        // Time slots from 6 AM to 10 PM
+        const timeSlots = [
+            '06:00', '07:00', '08:00', '09:00', '10:00', '11:00',
+            '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
+            '18:00', '19:00', '20:00', '21:00', '22:00'
+        ];
+
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.form-section');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            sections.forEach(s => s.classList.remove('active'));
+            
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('login-section').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('register-section').classList.add('active');
+            }
+            
+            hideAlert();
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            const icon = document.getElementById('alert-icon');
+            const msg = document.getElementById('alert-message');
+            
+            alert.className = `alert ${type} show`;
+            msg.textContent = message;
+            icon.textContent = type === 'success' ? 'check_circle' : 'error';
+        }
+
+        function hideAlert() {
+            document.getElementById('alert').classList.remove('show');
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentUser = data;
+                    showDashboard();
+                    loadUserReservations();
+                } else {
+                    showAlert(data.detail || 'Error al iniciar sesión', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión con el servidor', 'error');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            if (password !== confirm) {
+                showAlert('Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showAlert('¡Registro exitoso! Ahora puedes iniciar sesión', 'success');
+                    document.getElementById('register-form').reset();
+                    setTimeout(() => switchTab('login'), 2000);
+                } else {
+                    showAlert(data.detail || 'Error al registrarse', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión con el servidor', 'error');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('user-name').textContent = currentUser.name;
+            loadSports();
+            addNotification('Bienvenido', `¡Hola ${currentUser.name}! Bienvenido al Centro Deportivo`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('auth-container').classList.remove('hidden');
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('login-form').reset();
+            notifications = [];
+            updateNotificationBadge();
+        }
+
+        function loadSports() {
+            const grid = document.getElementById('sports-grid');
+            grid.innerHTML = sports.map(sport => `
+                <div class="sport-card" onclick="showCourts('${sport.id}', '${sport.name}')">
+                    <div class="sport-icon">${sport.icon}</div>
+                    <h3>${sport.name}</h3>
+                    <p>${sport.description}</p>
+                    <span class="sport-badge">Ver canchas</span>
+                </div>
+            `).join('');
+        }
+
+        async function showCourts(sportId, sportName) {
+            document.getElementById('sports-view').classList.remove('active');
+            document.getElementById('courts-view').classList.add('active');
+            document.getElementById('sport-title').textContent = sportName;
+            
+            try {
+                const response = await fetch(`${API_URL}/courts/${sportId}`);
+                const courts = await response.json();
+                
+                const grid = document.getElementById('courts-grid');
+                grid.innerHTML = courts.map(court => `
+                    <div class="court-card">
+                        <div class="court-header">
+                            <h3>${court.name}</h3>
+                            <span class="court-status">${court.status}</span>
+                        </div>
+                        <div class="court-body">
+                            <div class="court-info">
+                                <div class="info-row">
+                                    <span class="material-icons">schedule</span>
+                                    <span>Horario: ${court.schedule}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="material-icons">event</span>
+                                    <span>Disponible: ${court.available_days}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="material-icons">info</span>
+                                    <span>${court.features}</span>
+                                </div>
+                            </div>
+                            <div class="price-tag">
+                                ${court.price_per_hour} <span>MXN/hora</span>
+                            </div>
+                            <button class="btn-reserve" onclick='openReservationModal(${JSON.stringify(court)})'>
+                                Reservar ahora
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function showSportsView() {
+            document.getElementById('courts-view').classList.remove('active');
+            document.getElementById('sports-view').classList.add('active');
+        }
+
+        function openReservationModal(court) {
+            currentCourt = court;
+            selectedDate = null;
+            selectedTime = null;
+            document.getElementById('modal-court-name').textContent = `Reservar ${court.name}`;
+            document.getElementById('reservation-modal').classList.add('active');
+            document.getElementById('reservation-summary').style.display = 'none';
+            document.getElementById('confirm-btn').disabled = true;
+            renderCalendar();
+            renderTimeSlots();
+        }
+
+        function closeReservationModal() {
+            document.getElementById('reservation-modal').classList.remove('active');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                              'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            
+            document.getElementById('current-month').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const today = new Date();
+            
+            let html = '';
+            const dayHeaders = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            dayHeaders.forEach(day => {
+                html += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                html += '<div class="calendar-day disabled"></div>';
+            }
+            
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                const isPast = date < today.setHours(0, 0, 0, 0);
+                const isToday = date.toDateString() === new Date().toDateString();
+                const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+                
+                let classes = 'calendar-day';
+                if (isPast) classes += ' disabled';
+                if (isToday) classes += ' today';
+                if (isSelected) classes += ' selected';
+                
+                html += `<div class="${classes}" onclick="selectDate(${date.getTime()})">${day}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function selectDate(timestamp) {
+            const date = new Date(timestamp);
+            if (date < new Date().setHours(0, 0, 0, 0)) return;
+            
+            selectedDate = date;
+            selectedTime = null;
+            renderCalendar();
+            renderTimeSlots();
+            updateReservationSummary();
+        }
+
+        async function renderTimeSlots() {
+            const grid = document.getElementById('time-slots');
+            
+            if (!selectedDate) {
+                grid.innerHTML = '<p style="text-align: center; color: #79747E;">Selecciona una fecha primero</p>';
+                return;
+            }
+            
+            try {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                const response = await fetch(`${API_URL}/reservations/${currentCourt.id}/${dateStr}`);
+                const reservations = await response.json();
+                const occupiedTimes = reservations.map(r => r.time);
+                
+                grid.innerHTML = timeSlots.map(time => {
+                    const isOccupied = occupiedTimes.includes(time);
+                    const isSelected = selectedTime === time;
+                    let classes = 'time-slot';
+                    if (isOccupied) classes += ' occupied';
+                    if (isSelected) classes += ' selected';
+                    
+                    return `
+                        <div class="${classes}" onclick="selectTime('${time}', ${isOccupied})">
+                            ${time}
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading time slots:', error);
+                grid.innerHTML = timeSlots.map(time => {
+                    const isSelected = selectedTime === time;
+                    return `
+                        <div class="time-slot ${isSelected ? 'selected' : ''}" onclick="selectTime('${time}', false)">
+                            ${time}
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function selectTime(time, isOccupied) {
+            if (isOccupied) return;
+            selectedTime = time;
+            renderTimeSlots();
+            updateReservationSummary();
+        }
+
+        function updateReservationSummary() {
+            if (!selectedDate || !selectedTime) {
+                document.getElementById('reservation-summary').style.display = 'none';
+                document.getElementById('confirm-btn').disabled = true;
+                return;
+            }
+            
+            document.getElementById('reservation-summary').style.display = 'block';
+            document.getElementById('confirm-btn').disabled = false;
+            
+            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            const dateStr = `${selectedDate.getDate()} ${months[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
+            
+            document.getElementById('summary-court').textContent = currentCourt.name;
+            document.getElementById('summary-date').textContent = dateStr;
+            document.getElementById('summary-time').textContent = selectedTime;
+            document.getElementById('summary-price').textContent = `${currentCourt.price_per_hour} MXN`;
+            document.getElementById('summary-total').textContent = currentCourt.price_per_hour;
+        }
+
+        async function confirmReservation() {
+            if (!selectedDate || !selectedTime) return;
+            
+            try {
+                const reservation = {
+                    user_id: currentUser.id,
+                    court_id: currentCourt.id,
+                    court_name: currentCourt.name,
+                    date: selectedDate.toISOString().split('T')[0],
+                    time: selectedTime,
+                    price: currentCourt.price_per_hour
+                };
+                
+                const response = await fetch(`${API_URL}/reservations`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reservation)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addNotification(
+                        'Reservación Confirmada',
+                        `Tu reservación para ${currentCourt.name} el ${reservation.date} a las ${selectedTime} ha sido confirmada.`,
+                        'success'
+                    );
+                    closeReservationModal();
+                    alert('¡Reservación confirmada exitosamente!');
+                } else {
+                    alert(data.detail || 'Error al confirmar la reservación');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error de conexión con el servidor');
+            }
+        }
+
+        async function loadUserReservations() {
+            try {
+                const response = await fetch(`${API_URL}/reservations/user/${currentUser.id}`);
+                const reservations = await response.json();
+                
+                reservations.forEach(res => {
+                    const resDate = new Date(res.date);
+                    const today = new Date();
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    
+                    if (resDate.toDateString() === tomorrow.toDateString()) {
+                        addNotification(
+                            'Recordatorio de Reservación',
+                            `Tienes una reservación mañana: ${res.court_name} a las ${res.time}`,
+                            'info'
+                        );
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading reservations:', error);
+            }
+        }
+
+        function addNotification(title, message, type) {
+            const notification = {
+                id: Date.now(),
+                title,
+                message,
+                type,
+                time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                unread: true
+            };
+            
+            notifications.unshift(notification);
+            updateNotificationBadge();
+            renderNotifications();
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => n.unread).length;
+            const badge = document.getElementById('notification-count');
+            badge.textContent = unreadCount;
+            badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+        }
+
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            panel.classList.toggle('active');
+            
+            if (panel.classList.contains('active')) {
+                notifications.forEach(n => n.unread = false);
+                updateNotificationBadge();
+                renderNotifications();
+            }
+        }
+
+        function renderNotifications() {
+            const body = document.getElementById('notifications-body');
+            
+            if (notifications.length === 0) {
+                body.innerHTML = `
+                    <div class="empty-notifications">
+                        <span class="material-icons" style="font-size: 48px; color: #ccc;">notifications_none</span>
+                        <p>No tienes notificaciones</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            body.innerHTML = notifications.map(n => `
+                <div class="notification-item ${n.unread ? 'unread' : ''}">
+                    <div class="notification-title">${n.title}</div>
+                    <div class="notification-message">${n.message}</div>
+                    <div class="notification-time">${n.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function clearAllNotifications() {
+            notifications = [];
+            updateNotificationBadge();
+            renderNotifications();
+        }
+
+        // Close notifications when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('notifications-panel');
+            const btn = document.querySelector('.notification-btn');
+            
+            if (panel.classList.contains('active') && 
+                !panel.contains(e.target) && 
+                !btn.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('reservation-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeReservationModal();
+            }
+        });
+    </script>
+</body>
+</html>

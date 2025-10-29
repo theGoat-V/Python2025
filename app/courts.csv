@@ -1,0 +1,26 @@
+id,sport_id,name,status,schedule,available_days,features,price_per_hour
+r1,raquetbol,Cancha Raquetbol 1,Disponible,6:00 AM - 10:00 PM,Lun-Dom,Cancha profesional con piso de madera,250
+r2,raquetbol,Cancha Raquetbol 2,Disponible,6:00 AM - 10:00 PM,Lun-Dom,"Cancha climatizada, iluminación LED",280
+r3,raquetbol,Cancha Raquetbol 3,Disponible,8:00 AM - 8:00 PM,Lun-Sab,Cancha estándar con vestidores,220
+t1,tenis,Cancha Tenis 1,Disponible,6:00 AM - 10:00 PM,Lun-Dom,"Superficie dura, iluminación nocturna",350
+t2,tenis,Cancha Tenis 2,Disponible,6:00 AM - 10:00 PM,Lun-Dom,Superficie dura profesional,350
+t3,tenis,Cancha Tenis 3,Disponible,7:00 AM - 9:00 PM,Lun-Vie,"Superficie sintética, ideal para principiantes",280
+t4,tenis,Cancha Tenis VIP,Disponible,6:00 AM - 11:00 PM,Lun-Dom,Cancha premium con gradas y equipamiento,450
+p1,padel,Cancha Pádel 1,Disponible,7:00 AM - 11:00 PM,Lun-Dom,Cancha de cristal panorámica,320
+p2,padel,Cancha Pádel 2,Disponible,7:00 AM - 11:00 PM,Lun-Dom,Césped sintético premium,320
+p3,padel,Cancha Pádel 3,Disponible,8:00 AM - 10:00 PM,Lun-Sab,Cancha techada con iluminación,300
+pk1,pickleball,Cancha Pickleball 1,Disponible,6:00 AM - 9:00 PM,Lun-Dom,"Cancha doble, superficie acrílica",180
+pk2,pickleball,Cancha Pickleball 2,Disponible,6:00 AM - 9:00 PM,Lun-Dom,"Cancha cubierta, equipamiento incluido",200
+pk3,pickleball,Cancha Pickleball 3,Disponible,7:00 AM - 8:00 PM,Lun-Vie,Cancha estándar al aire libre,150
+v1,voleibol,Cancha Voleibol Indoor 1,Disponible,6:00 AM - 11:00 PM,Lun-Dom,"Piso de duela, red profesional",400
+v2,voleibol,Cancha Voleibol Indoor 2,Disponible,6:00 AM - 11:00 PM,Lun-Dom,"Cancha climatizada, gradas para 50 personas",450
+v3,voleibol,Cancha Voleibol Arena,Disponible,8:00 AM - 8:00 PM,Lun-Sab,"Cancha de arena, ideal para beach volley",350
+b1,baloncesto,Cancha Baloncesto 1,Disponible,6:00 AM - 11:00 PM,Lun-Dom,"Cancha profesional, tableros hidráulicos",500
+b2,baloncesto,Cancha Baloncesto 2,Disponible,6:00 AM - 11:00 PM,Lun-Dom,"Media cancha, ideal para entrenamientos",300
+b3,baloncesto,Cancha Baloncesto Outdoor,Disponible,7:00 AM - 9:00 PM,Lun-Dom,"Cancha al aire libre, piso sintético",250
+bd1,badminton,Cancha Bádminton 1,Disponible,6:00 AM - 10:00 PM,Lun-Dom,"Cancha doble, sin corrientes de aire",220
+bd2,badminton,Cancha Bádminton 2,Disponible,6:00 AM - 10:00 PM,Lun-Dom,Cancha individual con piso de madera,200
+bd3,badminton,Cancha Bádminton 3,Disponible,7:00 AM - 9:00 PM,Lun-Vie,"Cancha climatizada, iluminación óptima",240
+s1,squash,Cancha Squash 1,Disponible,6:00 AM - 10:00 PM,Lun-Dom,Cancha de cristal profesional,280
+s2,squash,Cancha Squash 2,Disponible,6:00 AM - 10:00 PM,Lun-Dom,Cancha climatizada con ventilación,280
+s3,squash,Cancha Squash 3,Disponible,8:00 AM - 8:00 PM,Lun-Sab,Cancha estándar con paredes blancas,250
